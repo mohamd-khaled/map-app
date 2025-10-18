@@ -1,10 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Marker, Popup, useMap } from "react-leaflet";
 import { Icon } from "leaflet";
+import { PositionContext } from "@/contexts/PositionContext";
 
 const CurrentPosition = () => {
-  const [position, setPosition] = useState(null);
+  const { position, setPosition } = useContext(PositionContext);
   const map = useMap();
 
   const myIcon = new Icon({
@@ -24,11 +25,9 @@ const CurrentPosition = () => {
         setPosition([latitude, longitude]);
         map.flyTo([latitude, longitude], 13);
       },
-      (err) => {
-        console.error("Error getting location:", err);
-      }
+      (err) => console.error("Error getting location:", err)
     );
-  }, [map]);
+  }, [map, setPosition]);
 
   if (!position) return null;
 

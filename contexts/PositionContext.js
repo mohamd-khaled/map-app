@@ -1,7 +1,14 @@
 "use client";
-import { createContext, useState, useEffect } from "react";
-import { useMap } from "react-leaflet";
+import { createContext, useState } from "react";
 
-export const PositionContext = createContext(null);
+export const PositionContext = createContext();
 
-const PositionContextProvider = ({ children }) => {};
+export const PositionProvider = ({ children }) => {
+  const [position, setPosition] = useState(null);
+
+  return (
+    <PositionContext.Provider value={{ position, setPosition }}>
+      {children}
+    </PositionContext.Provider>
+  );
+};
