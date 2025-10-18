@@ -1,10 +1,12 @@
-import { useState, useEffect, useContext } from "react";
+"use client";
+import { useState, useEffect } from "react";
 import { Marker, Popup, useMap } from "react-leaflet";
 import { Icon } from "leaflet";
 
 const CurrentPosition = () => {
   const [position, setPosition] = useState(null);
   const map = useMap();
+
   const myIcon = new Icon({
     iconUrl: "/location-pin.png",
     iconSize: [38, 38],
@@ -20,17 +22,19 @@ const CurrentPosition = () => {
       (pos) => {
         const { latitude, longitude } = pos.coords;
         setPosition([latitude, longitude]);
-        map.flyTo([latitude, longitude], map.getZoom());
+        map.flyTo([latitude, longitude], 13);
       },
       (err) => {
-        console.log(`Error geting location`);
+        console.error("Error getting location:", err);
       }
     );
   }, [map]);
 
-  return position === null ? null : (
+  if (!position) return null;
+
+  return (
     <Marker position={position} icon={myIcon}>
-      <Popup>You are Here</Popup>
+      <Popup>You are here</Popup>
     </Marker>
   );
 };
