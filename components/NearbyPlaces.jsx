@@ -1,47 +1,57 @@
-import React from "react";
-import NearbyPlacesDetails from "./NearbyPlacesDetails";
+"use client";
+import { useContext, useEffect, useState, useRef } from "react";
+import { Marker, Popup } from "react-leaflet";
+import { Icon } from "leaflet";
+import { PositionContext } from "@/contexts/PositionContext";
 
-const NearbyPlaces = () => {
+const NearbyPlaces = ({ categoryValue }) => {
+  const { position } = useContext(PositionContext);
+  const [places, setPlaces] = useState([]);
+  const hasFetched = useRef(false);
+
+  const myIcon = new Icon({
+    iconUrl: "/location-pin.png",
+    iconSize: [38, 38],
+  });
+
+  useEffect(() => {
+    if (!position) return;
+    const [lat, lng] = position;
+    const fetchPlaces = async () => {
+      try {
+        const query = `
+          [out:json];
+          node["amenity"="${categoryValue}"](around:1000,${lat},${lng});
+          out;
+        `;
+        const res = await fetch("https://overpass-api.de/api/interpreter", {
+          method: "POST",
+          body: query,
+        });
+        const data = await res.json();
+        setPlaces(data.elements || []);
+      } catch (err) {
+        console.error("Error fetching nearby places:", err);
+      }
+    };
+
+    fetchPlaces();
+  }, [position, categoryValue]);
+
+  if (!position || places.length === 0) return null;
+
   return (
-    <div>
-      <h1 className="text-blue-500 font-bold mt-4 text-[20px] flex flex-row justify-between ">
-        Nearby Places
-        <span className="flex flex-row justify-between">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className=" w-10 h-10 cursor-pointer hover:scale-125 transition-all duration-300 hover:text-blue-950"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18"
-            />
-          </svg>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className=" w-10 h-10 cursor-pointer hover:scale-125 transition-all duration-300 hover:text-blue-950"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-            />
-          </svg>
-        </span>
-      </h1>
-
-      <div>
-        <NearbyPlacesDetails />
-      </div>
-    </div>
+    <>
+      {places.map((place, i) => (
+        <Marker key={i} position={[place.lat, place.lon]} icon={myIcon}>
+          <Popup>
+            <strong>{place.tags.name || "Unnamed place"}</strong>
+            <br />
+            {place.tags.amenity}
+          </Popup>
+        </Marker>
+      ))}
+    </>
   );
 };
 

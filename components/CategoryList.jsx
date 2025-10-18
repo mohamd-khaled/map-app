@@ -15,7 +15,7 @@ const CategoryList = () => {
       <h1 className="text-blue-500 font-bold mt-4 text-[20px]  ">
         Select Category
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-3  gap-4">
+      <div className="grid grid-cols-3  gap-4">
         {category?.map((item) => (
           <CategoryDetails key={item.id} category={item} />
         ))}

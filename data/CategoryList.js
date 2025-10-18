@@ -1,22 +1,22 @@
 const categoryListData = [
   {
     id: 1,
-    name: "Hotels",
-    value: "hotels",
-    icon: "/hotel.png",
+    name: "Cinema",
+    value: "cinema",
+    icon: "/cinema.png",
   },
 
   {
     id: 2,
     name: "Restaurants",
-    value: "restaurants",
+    value: "restaurant",
     icon: "/restaurant-building.png",
   },
 
   {
     id: 3,
     name: "Gas Station",
-    value: "gas_station",
+    value: "fuel",
     icon: "/gas-station.png",
   },
 ];

@@ -1,8 +1,16 @@
-import React from "react";
-import Image from "next/image";
+"use client";
+import React, { useContext } from "react";
+import { CategoryContext } from "@/contexts/CategoryContext";
+
 const CategoryDetails = ({ category }) => {
+  const { showCategory, setShowCategory } = useContext(CategoryContext);
   return (
-    <div className="mt-5 flex flex-col items-center bg-blue-100 rounded-2xl p-4 cursor-pointer hover:scale-105 transition-all">
+    <div
+      onClick={() => {
+        setShowCategory(category.value);
+      }}
+      className="mt-5 flex flex-col items-center bg-blue-100 rounded-2xl p-4 cursor-pointer hover:scale-105 transition-all"
+    >
       <img
         src={category.icon}
         alt={category.name}
