@@ -1,13 +1,14 @@
 "use client";
 import React from "react";
+import LeafletMap from "./LeafletMap";
 
 const NearbyPlacesDetails = () => {
   return (
     <div className="flex gap-3 border-b-[1px] border-blue-300 p-3">
+      <LeafletMap width={250} height={250} />
       <div>
         <h2 className="font-bold text-[20px]">Nearby Places</h2>
         <h2 className="text-gray-400">Address</h2>
-
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

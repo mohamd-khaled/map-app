@@ -1,8 +1,10 @@
+"use client";
 import Image from "next/image";
 import NavBar from "@/components/NavBar";
 import SearchBar from "@/components/SearchBar";
 import CategoryList from "@/components/CategoryList";
 import NearbyPlaces from "@/components/NearbyPlaces";
+import LeafletMap from "@/components/LeafletMap";
 
 export default function Home() {
   return (
@@ -15,7 +17,10 @@ export default function Home() {
           <CategoryList />
           <NearbyPlaces />
         </div>
-        <div>Map</div>
+        <div className="place-items-center">
+          <h2>Your Location</h2>
+          <LeafletMap width={500} height={500} />
+        </div>
       </div>
     </div>
   );
